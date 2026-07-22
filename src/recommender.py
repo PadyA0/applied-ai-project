@@ -1,6 +1,6 @@
 import csv
 from typing import List, Dict, Tuple, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 @dataclass
 class Song:
@@ -38,13 +38,33 @@ class Recommender:
     def __init__(self, songs: List[Song]):
         self.songs = songs
 
+    @staticmethod
+    def _prefs_from_user(user: UserProfile) -> Dict:
+        """Translate a UserProfile into the prefs dict score_song understands.
+
+        likes_acoustic is a boolean taste flag, so it maps to the extreme of the
+        0.0-1.0 acousticness scale: 1.0 when they want acoustic, 0.0 when they
+        don't. That lets the acousticness penalty reward or punish accordingly.
+        """
+        return {
+            "genre": user.favorite_genre,
+            "mood": user.favorite_mood,
+            "energy": user.target_energy,
+            "acousticness": 1.0 if user.likes_acoustic else 0.0,
+        }
+
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+        """Return the top k songs for this user, highest score first."""
+        prefs = self._prefs_from_user(user)
+        scored = [(song, score_song(prefs, asdict(song))[0]) for song in self.songs]
+        scored.sort(key=lambda item: item[1], reverse=True)
+        return [song for song, _ in scored[:k]]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
+        """Human-readable reason string for why this song fits the user."""
+        prefs = self._prefs_from_user(user)
+        _, reasons = score_song(prefs, asdict(song))
+        return ", ".join(reasons) if reasons else "no strong match"
 
 def load_songs(csv_path: str) -> List[Dict]:
     """Load songs from a CSV into a list of dicts, converting numeric columns to int/float."""
@@ -54,10 +74,16 @@ def load_songs(csv_path: str) -> List[Dict]:
     def to_number(value: str):
         # Whole numbers (id, tempo_bpm, popularity, release_decade) become ints;
         # anything with a decimal point (energy, valence, ...) becomes a float.
+        # A value we can't parse (blank, "N/A", stray text) becomes None, meaning
+        # "unknown" -- scoring skips it rather than crashing or guessing a number.
         try:
             return int(value)
         except ValueError:
+            pass
+        try:
             return float(value)
+        except ValueError:
+            return None
 
     songs: List[Dict] = []
     with open(csv_path, newline="", encoding="utf-8") as f:
@@ -118,8 +144,9 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     # 0-1 scale features (reward-only): closeness stays >= 0, so they never hurt.
     for feature, weight in UNIT_WEIGHTS.items():
         pref = user_prefs.get(feature)
-        if pref is not None and feature in song:
-            closeness = max(0.0, 1.0 - abs(float(pref) - float(song[feature])))
+        value = song.get(feature)
+        if pref is not None and value is not None:
+            closeness = max(0.0, 1.0 - abs(float(pref) - float(value)))
             points = weight * closeness
             if points > 0:
                 score += points
@@ -128,8 +155,9 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     # 0-1 scale features (penalizing): a bad match subtracts points.
     for feature, weight in PENALIZED_UNIT_WEIGHTS.items():
         pref = user_prefs.get(feature)
-        if pref is not None and feature in song:
-            closeness = 1.0 - 2.0 * abs(float(pref) - float(song[feature]))  # +1..-1
+        value = song.get(feature)
+        if pref is not None and value is not None:
+            closeness = 1.0 - 2.0 * abs(float(pref) - float(value))  # +1..-1
             points = weight * closeness
             if points != 0:
                 score += points
@@ -139,9 +167,10 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     # Custom-range features: normalize the gap by the range width, then scale.
     for feature, (low, high, weight) in RANGED_WEIGHTS.items():
         pref = user_prefs.get(feature)
-        if pref is not None and feature in song:
+        value = song.get(feature)
+        if pref is not None and value is not None:
             span = high - low
-            closeness = max(0.0, 1.0 - abs(float(pref) - float(song[feature])) / span)
+            closeness = max(0.0, 1.0 - abs(float(pref) - float(value)) / span)
             points = weight * closeness
             if points > 0:
                 score += points

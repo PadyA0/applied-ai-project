@@ -13,16 +13,18 @@
 I told it to implement a penalty when one of the features is too bad of a match. Like the acousticness, if the match is too weak the model loses some points.
 
 **Prompts used:**
+here are two examples of prompts I used during my brainstorming: 
+" say you are an AI trainer that wants to strengthen the recommender. Implement a penalty for a feature like acousticness if the match is too bad."
 
-say you are an AI trainer that wants to strengthen the recommender. Implement a penalty for a feature like acousticness if the match is too bad.
+"add tests that assert scoring behavior". this one was a follow up to changing the scoring logic, in the recommender.py file. To be more specific, I put code into score_song() that could be easier to understand, thus my tests for it had to change.
 
 **What did the agent generate or change?**
 
-The agent edited the recommender.py file by adding 11 lines.
+The agent edited the recommender.py file by adding to the sorting method. the code I had at first was hard to understand, so with the AI suggestions, I made it more readable.
 
 **What did you verify or fix manually?**
 
-the output would have some unicode Claude symbols in my terminal. That tends to break the workflow, so I went in and made it ASCII instead.
+the output would have some unicode Claude symbols in my terminal. The symbols suggested by the AI tend to break the workflow, so I went in and made it ASCII instead.
 
 ---
 

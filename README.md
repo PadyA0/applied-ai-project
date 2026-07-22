@@ -73,46 +73,120 @@ pytest
 ```
 
 You can add more tests in `tests/test_recommender.py`.
+I added more tests at the rate of at least 1 test per method in recommender.py. I also wanted to cover edge cases .
 
 ---
 
 ## Sample Recommendation Output
 
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
-Loaded songs: 20
+Loaded songs: 40
 
 ================================================
   TOP RECOMMENDATIONS
-  for: genre=pop, mood=happy, energy=0.8
+  for profile:
+    - genre: pop
+    - mood: happy
+    - energy: 0.8
+    - valence: 0.85
+    - danceability: 0.8
+    - acousticness: 0.15
+    - instrumental: 0.05
+    - wordiness: 0.1
+    - tempo_bpm: 120
+    - popularity: 80
+    - release_decade: 2020
 ================================================
 
-1. Sunrise City - Neon Echo             3.98 pts
-   reasons: genre match (+2.0), mood match (+1.0), energy fit (+0.98)
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Sunrise City         | Neon Echo        | 7.72  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.98), valence fit (+0.59),     |
+|    |                      |                  |       | danceability fit (+0.59), instrumental fit   |
+|    |                      |                  |       | (+0.40), wordiness fit (+0.28), acousticness |
+|    |                      |                  |       | fit (+0.47), tempo_bpm fit (+0.49),          |
+|    |                      |                  |       | popularity fit (+0.40), release_decade fit   |
+|    |                      |                  |       | (+0.50)                                      |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Billie Jean          | Michael Jackson  | 6.57  | genre match (+2.0), energy fit (+0.99),      |
+|    |                      |                  |       | valence fit (+0.59), danceability fit        |
+|    |                      |                  |       | (+0.53), instrumental fit (+0.39), wordiness |
+|    |                      |                  |       | fit (+0.30), acousticness fit (+0.48),       |
+|    |                      |                  |       | tempo_bpm fit (+0.49), popularity fit        |
+|    |                      |                  |       | (+0.45), release_decade fit (+0.35)          |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Gym Hero             | Max Pulse        | 6.42  | genre match (+2.0), energy fit (+0.87),      |
+|    |                      |                  |       | valence fit (+0.55), danceability fit        |
+|    |                      |                  |       | (+0.55), instrumental fit (+0.40), wordiness |
+|    |                      |                  |       | fit (+0.30), acousticness fit (+0.40),       |
+|    |                      |                  |       | tempo_bpm fit (+0.46), popularity fit        |
+|    |                      |                  |       | (+0.39), release_decade fit (+0.50)          |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 4  | Shape of You         | Ed Sheeran       | 6.03  | genre match (+2.0), energy fit (+0.85),      |
+|    |                      |                  |       | valence fit (+0.55), danceability fit        |
+|    |                      |                  |       | (+0.58), instrumental fit (+0.38), wordiness |
+|    |                      |                  |       | fit (+0.28), acousticness fit (+0.07),       |
+|    |                      |                  |       | tempo_bpm fit (+0.41), popularity fit        |
+|    |                      |                  |       | (+0.44), release_decade fit (+0.46)          |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 5  | Get Lucky            | Daft Punk        | 5.66  | mood match (+1.0), energy fit (+0.99),       |
+|    |                      |                  |       | valence fit (+0.59), danceability fit        |
+|    |                      |                  |       | (+0.59), instrumental fit (+0.38), wordiness |
+|    |                      |                  |       | fit (+0.28), acousticness fit (+0.39),       |
+|    |                      |                  |       | tempo_bpm fit (+0.49), popularity fit        |
+|    |                      |                  |       | (+0.49), release_decade fit (+0.46)          |
++----+----------------------+------------------+-------+----------------------------------------------+
+(venv) PS C:\Users\padya\vibecoding\musicrecommendersimulation> python -m src.main 
+Loaded songs: 40
 
-2. Gym Hero - Max Pulse                 2.87 pts
-   reasons: genre match (+2.0), energy fit (+0.87)
+==============================================================================
+  Chill Indie  (indie pop / melancholic / low energy)
+  profile: genre=indie pop, mood=melancholic, energy=0.2
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Rooftop Lights       | Indigo Parade    | 2.44  | genre match (+2.0), energy fit (+0.44)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Nothing Else Matters | Metallica        | 1.65  | mood match (+1.0), energy fit (+0.65)        |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Spacewalk Thoughts   | Orbit Bloom      | 0.92  | energy fit (+0.92)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
 
-3. Rooftop Lights - Indigo Parade       1.96 pts
-   reasons: mood match (+1.0), energy fit (+0.96)
+==============================================================================
+  Smooth Jazz  (jazz / cool / mid energy)
+  profile: genre=jazz, mood=cool, energy=0.4
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | So What              | Miles Davis      | 3.90  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.90)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Coffee Shop Stories  | Slow Stereo      | 2.97  | genre match (+2.0), energy fit (+0.97)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Take Five            | Dave Brubeck     | 2.95  | genre match (+2.0), energy fit (+0.95)       |
++----+----------------------+------------------+-------+----------------------------------------------+
 
-4. Despecha - Rosalia                   1.00 pts
-   reasons: energy fit (+1.00)
-
-5. Titi Me Pregunto - Bad Bunny         0.95 pts
-   reasons: energy fit (+0.95)
-
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
+==============================================================================
+  Upbeat Pop   (pop / happy / high energy)
+  profile: genre=pop, mood=happy, energy=0.8
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Sunrise City         | Neon Echo        | 3.98  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.98)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Billie Jean          | Michael Jackson  | 2.99  | genre match (+2.0), energy fit (+0.99)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Gym Hero             | Max Pulse        | 2.87  | genre match (+2.0), energy fit (+0.87)       |
++----+----------------------+------------------+-------+----------------------------------------------+
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 ![screenshot of main output](image.png)
-
+![screenshot with 3 different user profile in output](image-1.png)
 ---
 
 ## Experiments You Tried
@@ -136,7 +210,7 @@ Examples:
 - It does not understand lyrics or language
 - It might over favor one genre or mood
 
-The limitations I can think of at the moment or from the tiny data set because the catalog of songs is small at the moment. I just have 40 songs with many genres that spin across cultures in They appear just once or twice. A user whose taste is one of those generous that appeared just once like classical, metal, a piano, soca They get just one single option and some type of filler for the other score. So for the lyrics or the language of the songs the model doesn't really have an understanding of the semantics. The worthiness feature just represents a number, the system doesn't actually assess what the song is about or what language it is in and this might be an important decision making factor for a user that's looking for a specific theme or a specific language. Some generals tend to dominate the ranking just because of the genera so there's like a bias there. 
+The limitations I can think of at the moment or from the tiny data set because the catalog of songs is small at the moment. I just have 40 songs with many genres that span across cultures. Some of the genres appear just once or twice. A user whose taste is one of those generous that appeared just once like classical, metal, a piano, soca would get just one single option and some type of filler for the other scores. When it comes to the lyrics or the language of the songs the model doesn't really have an understanding of the semantics. The wordiness feature just represents a number, the system doesn't actually assess what the song is about or what language it is in and this might be an important decision making factor for a user that's looking for a specific theme or a specific language. Some genres will dominate the ranking in the output just because there's a bias that I intentionnally left in the scoring logic.
 
 ---
 

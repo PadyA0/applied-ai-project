@@ -53,38 +53,28 @@ def render_table(headers, rows, widths) -> str:
     return "\n".join(out)
 
 
-def main() -> None:
-    songs = load_songs("data/songs.csv")
-    print(f"Loaded songs: {len(songs)}")
+# Three example profiles to experiment with. Each is (label, prefs); every key
+# in a prefs dict is used by score_song, so add/drop keys to ignore features.
+# Genre/mood tokens use exact catalog values (see data/songs.csv) so they match.
+PROFILES = [
+    ("Chill Indie  (indie pop / melancholic / low energy)",
+     {"genre": "indie pop", "mood": "melancholic", "energy": 0.2}),
+    ("Smooth Jazz  (jazz / cool / mid energy)",
+     {"genre": "jazz", "mood": "cool", "energy": 0.4}),
+    ("Upbeat Pop   (pop / happy / high energy)",
+     {"genre": "pop", "mood": "happy", "energy": 0.8}),
+]
 
-    # Example profile. Every key here is used by score_song, so all song
-    # features play a role in the ranking. Drop any key to ignore that feature.
-    user_prefs = {
-        "genre": "pop",
-        "mood": "happy",
-        "energy": 0.8,
-        "valence": 0.85,
-        "danceability": 0.8,
-        "acousticness": 0.15,
-        "instrumental": 0.05,
-        "wordiness": 0.10,
-        "tempo_bpm": 120,
-        "popularity": 80,
-        "release_decade": 2020,
-    }
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
+def print_profile_recommendations(label: str, user_prefs: dict, songs: list, k: int = 3) -> None:
+    """Print a labeled header and a ranked recommendation table for one profile."""
+    recommendations = recommend_songs(user_prefs, songs, k=k)
 
-    # A little header describing the full profile we searched for.
-    print("\n" + "=" * 48)
-    print("  TOP RECOMMENDATIONS")
-    print("  for profile:")
-    for key, value in user_prefs.items():
-        print(f"    - {key}: {value}")
-    print("=" * 48 + "\n")
+    print("\n" + "=" * 78)
+    print(f"  {label}")
+    print("  profile: " + ", ".join(f"{key}={value}" for key, value in user_prefs.items()))
+    print("=" * 78)
 
-    # Build one table row per recommendation. The reasons column is included so
-    # each score is explained right next to it.
     headers = ["#", "Title", "Artist", "Score", "Reasons"]
     widths = [2, 20, 16, 5, 44]
     rows = [
@@ -92,6 +82,15 @@ def main() -> None:
         for rank, (song, score, explanation) in enumerate(recommendations, start=1)
     ]
     print(render_table(headers, rows, widths))
+
+
+def main() -> None:
+    songs = load_songs("data/songs.csv")
+    print(f"Loaded songs: {len(songs)}")
+
+    # Run every example profile so their outputs can be compared side by side.
+    for label, user_prefs in PROFILES:
+        print_profile_recommendations(label, user_prefs, songs)
 
 
 if __name__ == "__main__":
