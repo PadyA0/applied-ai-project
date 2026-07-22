@@ -13,21 +13,31 @@ Your goal is to:
 
 Replace this paragraph with your own summary of what your version does.
 
----
+In summary, this program is a music recommender that uses rule to prioritize the best option for the user.
 
 ## How The System Works
 
 Explain your design in plain language.
+My design is a simple approach at making a music recommender. Music platforms in the real world tend to combine core-based filtering and content-based filtering to give the best option to the user. This program is a modest, but effective way to duplicate a more realistic platform like Youtube Music. My system will be more biased towards the genre and tempo though. In my experience, playing an upbeat hip hop song with sad themes to follow up another upbeat hip hop song that has happy themes at a party, it makes for a less brutal disruption to the dance moves and the state of mind.
 
 Some prompts to answer:
 
 - What features does each `Song` use in your system
   - For example: genre, mood, energy, tempo
+Each song presents features like the genre, mood, tempo, and energy that help categorize it in an algorithm.
+
 - What information does your `UserProfile` store
+This stores information about the preferences input by the user. Maybe the listener is a pop fan or maybe they want a energyzed beat for the gym. That information is collected in the UserProfile to tailor the recommendations to that. 
+
 - How does your `Recommender` compute a score for each song
+The recommender computes a weighted final numerical value to both score and rank the songs in the list of recommendations. There are two different formulas at play that first measure how much of a good match a song is, then a decision maker for the actual song.
+The core ide is that each song uses the single numerical score by adding different components, the song attributes, multiplied by a weight. 
+
 - How do you choose which songs to recommend
 
 You can include a simple diagram or bullet list if helpful.
+
+My recommender, while using a weighted score to combine core-based filtering and content-based filtering, might prioritize genre and tempo. A genre match will be a stronger signal than a mood match.
 
 ---
 
@@ -69,6 +79,27 @@ You can add more tests in `tests/test_recommender.py`.
 ## Sample Recommendation Output
 
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Loaded songs: 20
+
+================================================
+  TOP RECOMMENDATIONS
+  for: genre=pop, mood=happy, energy=0.8
+================================================
+
+1. Sunrise City - Neon Echo             3.98 pts
+   reasons: genre match (+2.0), mood match (+1.0), energy fit (+0.98)
+
+2. Gym Hero - Max Pulse                 2.87 pts
+   reasons: genre match (+2.0), energy fit (+0.87)
+
+3. Rooftop Lights - Indigo Parade       1.96 pts
+   reasons: mood match (+1.0), energy fit (+0.96)
+
+4. Despecha - Rosalia                   1.00 pts
+   reasons: energy fit (+1.00)
+
+5. Titi Me Pregunto - Bad Bunny         0.95 pts
+   reasons: energy fit (+0.95)
 
 ```
 # e.g.:
