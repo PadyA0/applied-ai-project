@@ -111,6 +111,7 @@ Loaded songs: 20
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
+![screenshot of main output](image.png)
 
 ---
 
@@ -121,6 +122,7 @@ Use this section to document the experiments you ran. For example:
 - What happened when you changed the weight on genre from 2.0 to 0.5
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
+I ran all of these against the 40 song catalog with the example of a profile with Pop and Happy as a baseline. I lowered the general weight from 2.0 to 0.05 and all of the top results were from the pub genre. When I dropped it to 0.5 that led non pop songs to come up so the audio features like the mood could climb. So the general says how strict about genera the model can be. I added features like tempo violins popularity release decade into the scoring system.
 
 ---
 
@@ -134,7 +136,7 @@ Examples:
 - It does not understand lyrics or language
 - It might over favor one genre or mood
 
-You will go deeper on this in your model card.
+The limitations I can think of at the moment or from the tiny data set because the catalog of songs is small at the moment. I just have 40 songs with many genres that spin across cultures in They appear just once or twice. A user whose taste is one of those generous that appeared just once like classical, metal, a piano, soca They get just one single option and some type of filler for the other score. So for the lyrics or the language of the songs the model doesn't really have an understanding of the semantics. The worthiness feature just represents a number, the system doesn't actually assess what the song is about or what language it is in and this might be an important decision making factor for a user that's looking for a specific theme or a specific language. Some generals tend to dominate the ranking just because of the genera so there's like a bias there. 
 
 ---
 
@@ -146,8 +148,7 @@ Read and complete `model_card.md`:
 
 Write 1 to 2 paragraphs here about what you learned:
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+ Building this model made it more clear how a recommender turns data into predictions. It takes human preferences into numbers maybe even matrices to make a scoring system for each item on a list. There are fixed rules to classify them sort the songs. The intelligent part of the machine is the recipe for the algorithm. Basically how we choose to weight the features is what affects the models results directly. Adding reasons to each recommendations also change how I think about these systems. Because you can explain the thought process behind the result.
 
 
 

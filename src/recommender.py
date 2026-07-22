@@ -48,47 +48,104 @@ class Recommender:
 
 def load_songs(csv_path: str) -> List[Dict]:
     """Load songs from a CSV into a list of dicts, converting numeric columns to int/float."""
-    # Columns that should stay as text; everything else is treated as numeric.
+    # Columns that should stay as text; everything else is coerced to a number.
     text_fields = {"title", "artist", "genre", "mood"}
+
+    def to_number(value: str):
+        # Whole numbers (id, tempo_bpm, popularity, release_decade) become ints;
+        # anything with a decimal point (energy, valence, ...) becomes a float.
+        try:
+            return int(value)
+        except ValueError:
+            return float(value)
 
     songs: List[Dict] = []
     with open(csv_path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            song: Dict = {}
-            for key, value in row.items():
-                if key == "id":
-                    song[key] = int(value)
-                elif key in text_fields:
-                    song[key] = value
-                else:
-                    song[key] = float(value)
+            song: Dict = {
+                key: value if key in text_fields else to_number(value)
+                for key, value in row.items()
+            }
             songs.append(song)
 
     return songs
 
+# --- Scoring configuration: every feature below contributes to the score. ---
+
+# Exact-match (categorical) features and the points a match is worth.
+CATEGORICAL_WEIGHTS = {"genre": 2.0, "mood": 1.0}
+
+# Numeric features already on a 0.0-1.0 scale. Points = weight * closeness,
+# where closeness = 1 - |target - value| (so an exact match earns the full weight
+# and a total mismatch earns 0 -- these features can only help, never hurt).
+UNIT_WEIGHTS = {
+    "energy": 1.0,
+    "valence": 0.6,
+    "danceability": 0.6,
+    "instrumental": 0.4,
+    "wordiness": 0.3,
+}
+
+# Penalizing 0.0-1.0 features. Here closeness = 1 - 2*|target - value|, which runs
+# from +1 (perfect) through 0 (halfway off) to -1 (opposite), so a bad match
+# actively subtracts points instead of merely adding nothing.
+PENALIZED_UNIT_WEIGHTS = {
+    "acousticness": 0.5,
+}
+
+# Numeric features on their own range: feature -> (min, max, weight).
+# Closeness is normalized by the range width so all features are comparable.
+RANGED_WEIGHTS = {
+    "tempo_bpm": (60.0, 200.0, 0.5),
+    "popularity": (0.0, 100.0, 0.5),
+    "release_decade": (1900.0, 2030.0, 0.5),
+}
+
+
 def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
-    """Score a song vs. prefs (+2 genre, +1 mood, up to +1 energy fit); return (score, reasons)."""
+    """Score a song against every preference (categorical match + numeric closeness); return (score, reasons)."""
     score = 0.0
     reasons: List[str] = []
 
-    # Genre match (+2.0). Compare case-insensitively so "Pop" == "pop".
-    if user_prefs.get("genre") and song.get("genre", "").lower() == user_prefs["genre"].lower():
-        score += 2.0
-        reasons.append("genre match (+2.0)")
+    # Categorical features: full points for an exact, case-insensitive match.
+    for feature, weight in CATEGORICAL_WEIGHTS.items():
+        pref = user_prefs.get(feature)
+        if pref and str(song.get(feature, "")).lower() == str(pref).lower():
+            score += weight
+            reasons.append(f"{feature} match (+{weight:.1f})")
 
-    # Mood match (+1.0).
-    if user_prefs.get("mood") and song.get("mood", "").lower() == user_prefs["mood"].lower():
-        score += 1.0
-        reasons.append("mood match (+1.0)")
+    # 0-1 scale features (reward-only): closeness stays >= 0, so they never hurt.
+    for feature, weight in UNIT_WEIGHTS.items():
+        pref = user_prefs.get(feature)
+        if pref is not None and feature in song:
+            closeness = max(0.0, 1.0 - abs(float(pref) - float(song[feature])))
+            points = weight * closeness
+            if points > 0:
+                score += points
+                reasons.append(f"{feature} fit (+{points:.2f})")
 
-    # Energy fit (up to +1.0). Reward songs whose energy is close to the target.
-    if user_prefs.get("energy") is not None and "energy" in song:
-        target = float(user_prefs["energy"])
-        energy_fit = 1.0 - abs(target - float(song["energy"]))
-        energy_fit = max(0.0, energy_fit)  # never let a big mismatch subtract
-        score += energy_fit
-        reasons.append(f"energy fit (+{energy_fit:.2f})")
+    # 0-1 scale features (penalizing): a bad match subtracts points.
+    for feature, weight in PENALIZED_UNIT_WEIGHTS.items():
+        pref = user_prefs.get(feature)
+        if pref is not None and feature in song:
+            closeness = 1.0 - 2.0 * abs(float(pref) - float(song[feature]))  # +1..-1
+            points = weight * closeness
+            if points != 0:
+                score += points
+                label = "fit" if points > 0 else "mismatch"
+                reasons.append(f"{feature} {label} ({points:+.2f})")
+
+    # Custom-range features: normalize the gap by the range width, then scale.
+    for feature, (low, high, weight) in RANGED_WEIGHTS.items():
+        pref = user_prefs.get(feature)
+        if pref is not None and feature in song:
+            span = high - low
+            closeness = max(0.0, 1.0 - abs(float(pref) - float(song[feature])) / span)
+            points = weight * closeness
+            if points > 0:
+                score += points
+                reasons.append(f"{feature} fit (+{points:.2f})")
 
     return score, reasons
 

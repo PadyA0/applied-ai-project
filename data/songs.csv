@@ -1,21 +1,41 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,instrumental,wordiness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,0.05,0.05
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,0.85,0.03
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,0.10,0.06
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,0.90,0.02
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,0.05,0.10
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,0.95,0.02
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,0.70,0.04
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,0.60,0.04
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,0.88,0.02
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,0.06,0.05
-11,Last Last,Burna Boy,afrobeats,nostalgic,0.70,106,0.55,0.85,0.15,0.02,0.25
-12,Water,Tyla,amapiano,sensual,0.68,116,0.70,0.90,0.12,0.10,0.08
-13,Toast,Koffee,reggae,uplifting,0.72,100,0.85,0.80,0.20,0.03,0.30
-14,Titi Me Pregunto,Bad Bunny,reggaeton,playful,0.85,106,0.60,0.87,0.09,0.02,0.45
-15,Ditto,NewJeans,k-pop,dreamy,0.60,130,0.68,0.75,0.25,0.05,0.08
-16,Idol,YOASOBI,j-pop,energetic,0.92,166,0.72,0.70,0.06,0.03,0.35
-17,Lover,Diljit Dosanjh,bhangra,romantic,0.75,92,0.80,0.82,0.30,0.06,0.10
-18,Despecha,Rosalia,flamenco pop,defiant,0.80,130,0.75,0.88,0.18,0.04,0.12
-19,Famalay,Machel Montano,soca,euphoric,0.95,132,0.90,0.90,0.07,0.03,0.15
-20,Tamally Maak,Amr Diab,arabic pop,tender,0.60,100,0.78,0.70,0.40,0.08,0.05
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,instrumental,wordiness,popularity,release_decade
+1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,0.05,0.05,60,2020
+2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,0.85,0.03,55,2020
+3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,0.10,0.06,50,2010
+4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,0.90,0.02,48,2020
+5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,0.05,0.10,58,2020
+6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,0.95,0.02,40,2020
+7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,0.70,0.04,45,2010
+8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,0.60,0.04,52,2020
+9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,0.88,0.02,50,2020
+10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,0.06,0.05,55,2020
+11,Last Last,Burna Boy,afrobeats,nostalgic,0.70,106,0.55,0.85,0.15,0.02,0.25,82,2020
+12,Water,Tyla,amapiano,sensual,0.68,116,0.70,0.90,0.12,0.10,0.08,88,2020
+13,Toast,Koffee,reggae,uplifting,0.72,100,0.85,0.80,0.20,0.03,0.30,70,2010
+14,Titi Me Pregunto,Bad Bunny,reggaeton,playful,0.85,106,0.60,0.87,0.09,0.02,0.45,90,2020
+15,Ditto,NewJeans,k-pop,dreamy,0.60,130,0.68,0.75,0.25,0.05,0.08,85,2020
+16,Idol,YOASOBI,j-pop,energetic,0.92,166,0.72,0.70,0.06,0.03,0.35,84,2020
+17,Lover,Diljit Dosanjh,bhangra,romantic,0.75,92,0.80,0.82,0.30,0.06,0.10,72,2020
+18,Despecha,Rosalia,flamenco pop,defiant,0.80,130,0.75,0.88,0.18,0.04,0.12,80,2020
+19,Famalay,Machel Montano,soca,euphoric,0.95,132,0.90,0.90,0.07,0.03,0.15,65,2010
+20,Tamally Maak,Amr Diab,arabic pop,tender,0.60,100,0.78,0.70,0.40,0.08,0.05,68,2000
+21,Billie Jean,Michael Jackson,pop,groovy,0.79,117,0.86,0.92,0.17,0.02,0.10,90,1980
+22,Bohemian Rhapsody,Queen,rock,dramatic,0.70,72,0.40,0.39,0.29,0.05,0.20,92,1970
+23,Smells Like Teen Spirit,Nirvana,grunge,angsty,0.91,117,0.72,0.50,0.02,0.05,0.15,88,1990
+24,Wonderwall,Oasis,britpop,nostalgic,0.65,87,0.55,0.41,0.30,0.03,0.18,85,1990
+25,Rolling in the Deep,Adele,soul,defiant,0.77,105,0.51,0.73,0.14,0.02,0.20,89,2010
+26,Uptown Funk,Bruno Mars,funk,groovy,0.86,115,0.93,0.86,0.01,0.02,0.22,90,2010
+27,Shape of You,Ed Sheeran,pop,romantic,0.65,96,0.93,0.83,0.58,0.00,0.18,92,2010
+28,Blinding Lights,The Weeknd,synthpop,energetic,0.73,171,0.33,0.51,0.00,0.00,0.12,95,2020
+29,Bad Guy,Billie Eilish,electropop,moody,0.43,135,0.56,0.70,0.33,0.13,0.14,90,2010
+30,Levitating,Dua Lipa,disco pop,happy,0.83,103,0.92,0.70,0.01,0.00,0.16,88,2020
+31,Take Five,Dave Brubeck,jazz,relaxed,0.35,174,0.55,0.45,0.55,0.90,0.00,70,1950
+32,So What,Miles Davis,jazz,cool,0.30,140,0.45,0.40,0.60,0.95,0.00,68,1950
+33,Hotel California,Eagles,rock,mysterious,0.51,75,0.60,0.58,0.24,0.10,0.18,88,1970
+34,Superstition,Stevie Wonder,funk,groovy,0.80,100,0.80,0.85,0.06,0.05,0.16,82,1970
+35,One Dance,Drake,afroswing,sensual,0.62,104,0.37,0.79,0.01,0.00,0.20,88,2010
+36,Gangnam Style,PSY,k-pop,playful,0.94,132,0.75,0.73,0.00,0.00,0.28,85,2010
+37,Despacito,Luis Fonsi,reggaeton,romantic,0.79,89,0.85,0.66,0.21,0.00,0.24,90,2010
+38,Clair de Lune,Claude Debussy,classical,dreamy,0.10,66,0.30,0.20,0.98,0.98,0.00,72,1900
+39,Nothing Else Matters,Metallica,metal,melancholic,0.55,72,0.30,0.40,0.10,0.15,0.15,84,1990
+40,Get Lucky,Daft Punk,disco,happy,0.81,116,0.86,0.79,0.04,0.10,0.18,82,2010
