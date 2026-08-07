@@ -39,3 +39,63 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,in
 38,Clair de Lune,Claude Debussy,classical,dreamy,0.10,66,0.30,0.20,0.98,0.98,0.00,72,1900
 39,Nothing Else Matters,Metallica,metal,melancholic,0.55,72,0.30,0.40,0.10,0.15,0.15,84,1990
 40,Get Lucky,Daft Punk,disco,happy,0.81,116,0.86,0.79,0.04,0.10,0.18,82,2010
+41,Toxic,Britney Spears,pop,intense,0.84,143,0.92,0.77,0.02,0.02,0.15,88,2000
+42,Someone Like You,Adele,pop,melancholic,0.32,68,0.20,0.44,0.91,0.00,0.16,90,2010
+43,Umbrella,Rihanna,pop,defiant,0.80,87,0.58,0.58,0.05,0.00,0.18,88,2000
+44,Firework,Katy Perry,pop,uplifting,0.83,124,0.65,0.64,0.14,0.00,0.15,84,2010
+45,As It Was,Harry Styles,pop,nostalgic,0.73,174,0.66,0.52,0.34,0.00,0.14,92,2020
+46,Back in Black,AC/DC,rock,intense,0.86,94,0.76,0.65,0.03,0.02,0.12,87,1980
+47,Stairway to Heaven,Led Zeppelin,rock,mysterious,0.34,82,0.20,0.34,0.58,0.10,0.15,89,1970
+48,Everlong,Foo Fighters,rock,intense,0.89,158,0.55,0.48,0.01,0.02,0.13,82,1990
+49,Mr Brightside,The Killers,rock,angsty,0.92,148,0.24,0.35,0.00,0.00,0.16,90,2000
+50,Master of Puppets,Metallica,metal,intense,0.95,212,0.35,0.30,0.00,0.10,0.14,85,1980
+51,Paranoid,Black Sabbath,metal,angsty,0.90,164,0.55,0.42,0.02,0.05,0.13,80,1970
+52,Chop Suey,System of a Down,metal,angsty,0.94,127,0.40,0.36,0.01,0.03,0.20,84,2000
+53,My Favorite Things,John Coltrane,jazz,dreamy,0.38,176,0.42,0.35,0.62,0.92,0.00,62,1960
+54,Feeling Good,Nina Simone,jazz,defiant,0.42,128,0.48,0.38,0.70,0.05,0.10,78,1960
+55,Fly Me to the Moon,Frank Sinatra,jazz,romantic,0.35,119,0.65,0.50,0.66,0.02,0.12,82,1960
+56,Respect,Aretha Franklin,soul,defiant,0.80,115,0.90,0.78,0.20,0.02,0.20,84,1960
+57,Whats Going On,Marvin Gaye,soul,melancholic,0.55,99,0.58,0.70,0.30,0.03,0.18,83,1970
+58,Aint No Mountain High Enough,Diana Ross,soul,uplifting,0.72,99,0.82,0.66,0.18,0.02,0.16,80,1970
+59,Give Up the Funk,Parliament,funk,groovy,0.85,108,0.88,0.88,0.03,0.05,0.20,70,1970
+60,Le Freak,Chic,funk,groovy,0.83,121,0.90,0.90,0.04,0.06,0.14,78,1970
+61,Stayin Alive,Bee Gees,disco,groovy,0.78,104,0.85,0.88,0.05,0.02,0.16,88,1970
+62,I Will Survive,Gloria Gaynor,disco,defiant,0.79,117,0.80,0.82,0.10,0.02,0.18,85,1970
+63,Dancing Queen,ABBA,disco,happy,0.75,101,0.85,0.80,0.14,0.02,0.15,90,1970
+64,Juicy,The Notorious BIG,hip hop,nostalgic,0.75,95,0.72,0.88,0.10,0.00,0.55,82,1990
+65,Lose Yourself,Eminem,hip hop,intense,0.90,171,0.45,0.70,0.03,0.00,0.60,90,2000
+66,Alright,Kendrick Lamar,hip hop,defiant,0.82,110,0.55,0.80,0.05,0.00,0.58,85,2010
+67,No Scrubs,TLC,r&b,playful,0.70,93,0.68,0.85,0.15,0.00,0.25,84,1990
+68,Crazy in Love,Beyonce,r&b,sensual,0.85,100,0.70,0.84,0.06,0.00,0.24,90,2000
+69,Jolene,Dolly Parton,country,melancholic,0.60,110,0.55,0.60,0.65,0.02,0.18,85,1970
+70,Ring of Fire,Johnny Cash,country,defiant,0.65,106,0.70,0.64,0.55,0.02,0.15,84,1960
+71,Three Little Birds,Bob Marley,reggae,uplifting,0.60,76,0.85,0.72,0.25,0.03,0.14,88,1970
+72,Buffalo Soldier,Bob Marley,reggae,defiant,0.63,88,0.75,0.75,0.22,0.03,0.16,82,1980
+73,Essence,Wizkid,afrobeats,sensual,0.62,106,0.60,0.85,0.14,0.02,0.18,88,2020
+74,Calm Down,Rema,afrobeats,playful,0.72,107,0.75,0.88,0.12,0.02,0.20,92,2020
+75,Mnike,Tyler ICU,amapiano,euphoric,0.75,112,0.68,0.90,0.08,0.15,0.12,75,2020
+76,Dynamite,BTS,k-pop,happy,0.80,114,0.78,0.75,0.11,0.00,0.14,92,2020
+77,How You Like That,BLACKPINK,k-pop,defiant,0.88,130,0.55,0.80,0.03,0.00,0.18,86,2020
+78,Plastic Love,Mariya Takeuchi,j-pop,nostalgic,0.65,103,0.70,0.80,0.20,0.03,0.12,70,1980
+79,Lemon,Kenshi Yonezu,j-pop,melancholic,0.55,87,0.40,0.60,0.35,0.02,0.15,80,2010
+80,Gasolina,Daddy Yankee,reggaeton,intense,0.88,94,0.75,0.88,0.03,0.00,0.35,86,2000
+81,Fur Elise,Ludwig van Beethoven,classical,tender,0.15,60,0.35,0.22,0.97,0.98,0.00,78,1900
+82,Spring,Antonio Vivaldi,classical,happy,0.30,108,0.60,0.25,0.95,0.98,0.00,76,1900
+83,Music for Airports,Brian Eno,ambient,dreamy,0.12,60,0.25,0.15,0.90,0.98,0.00,60,1970
+84,Weightless,Marconi Union,ambient,chill,0.10,60,0.20,0.12,0.88,0.97,0.00,55,2010
+85,One More Time,Daft Punk,house,euphoric,0.85,123,0.85,0.82,0.02,0.10,0.14,88,2000
+86,Music Sounds Better with You,Stardust,house,euphoric,0.82,122,0.88,0.85,0.03,0.30,0.08,72,1990
+87,Take on Me,a-ha,synthpop,energetic,0.85,169,0.88,0.57,0.02,0.00,0.14,90,1980
+88,Sweet Dreams,Eurythmics,synthpop,moody,0.75,126,0.45,0.78,0.03,0.10,0.14,88,1980
+89,Bitter Sweet Symphony,The Verve,britpop,melancholic,0.62,86,0.35,0.50,0.20,0.05,0.16,84,1990
+90,Common People,Pulp,britpop,defiant,0.85,138,0.60,0.55,0.05,0.02,0.22,78,1990
+91,Black Hole Sun,Soundgarden,grunge,moody,0.70,104,0.30,0.40,0.10,0.05,0.15,82,1990
+92,Alive,Pearl Jam,grunge,defiant,0.82,76,0.45,0.42,0.05,0.05,0.16,80,1990
+93,Take Me Out,Franz Ferdinand,indie pop,playful,0.80,105,0.60,0.55,0.02,0.02,0.15,82,2000
+94,Electric Feel,MGMT,indie pop,sensual,0.72,103,0.72,0.82,0.10,0.05,0.14,84,2000
+95,Hung Up,Madonna,electropop,euphoric,0.85,125,0.80,0.80,0.02,0.02,0.14,82,2000
+96,Savannah Grass,Kes,soca,euphoric,0.88,138,0.86,0.88,0.06,0.02,0.14,58,2010
+97,Mundian To Bach Ke,Panjabi MC,bhangra,playful,0.85,100,0.75,0.88,0.08,0.05,0.20,78,1990
+98,Nour El Ein,Amr Diab,arabic pop,romantic,0.68,104,0.82,0.78,0.32,0.05,0.08,74,1990
+99,Malamente,Rosalia,flamenco pop,defiant,0.72,98,0.60,0.85,0.25,0.05,0.14,78,2010
+100,Nightcall,Kavinsky,synthwave,moody,0.62,90,0.30,0.68,0.05,0.30,0.10,76,2010

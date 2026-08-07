@@ -123,7 +123,11 @@ PENALIZED_UNIT_WEIGHTS = {
 # Numeric features on their own range: feature -> (min, max, weight).
 # Closeness is normalized by the range width so all features are comparable.
 RANGED_WEIGHTS = {
-    "tempo_bpm": (60.0, 200.0, 0.5),
+    # Upper bound raised from 200 to 220 once real thrash metal entered the
+    # catalog. "Master of Puppets" runs at 212 bpm, and anything outside the
+    # declared range clamps to zero closeness, so the feature was silently
+    # switching itself off for exactly the songs whose tempo matters most.
+    "tempo_bpm": (60.0, 220.0, 0.5),
     "popularity": (0.0, 100.0, 0.5),
     "release_decade": (1900.0, 2030.0, 0.5),
 }
