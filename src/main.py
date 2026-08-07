@@ -14,9 +14,11 @@ import textwrap
 try:
     # Works when run as a module from the project root: python -m src.main
     from .recommender import load_songs, recommend_songs
+    from .rag import load_index, fun_fact_for
 except ImportError:
     # Works when run as a script from inside src/: python src/main.py
     from recommender import load_songs, recommend_songs
+    from rag import load_index, fun_fact_for
 
 
 def render_table(headers, rows, widths) -> str:
@@ -63,11 +65,18 @@ PROFILES = [
      {"genre": "jazz", "mood": "cool", "energy": 0.4}),
     ("Upbeat Pop   (pop / happy / high energy)",
      {"genre": "pop", "mood": "happy", "energy": 0.8}),
+    ("Deep Ambient (ambient / chill / very low energy)",
+     {"genre": "ambient", "mood": "chill", "energy": 0.1}),
 ]
 
 
-def print_profile_recommendations(label: str, user_prefs: dict, songs: list, k: int = 3) -> None:
-    """Print a labeled header and a ranked recommendation table for one profile."""
+def print_profile_recommendations(label: str, user_prefs: dict, songs: list,
+                                  index=None, k: int = 3) -> None:
+    """Print a labeled header and a ranked recommendation table for one profile.
+
+    If a note index is supplied, a retrieved fun fact about the top ranked song
+    is printed underneath the table.
+    """
     recommendations = recommend_songs(user_prefs, songs, k=k)
 
     print("\n" + "=" * 78)
@@ -83,14 +92,22 @@ def print_profile_recommendations(label: str, user_prefs: dict, songs: list, k: 
     ]
     print(render_table(headers, rows, widths))
 
+    # Retrieval step: look up a written note about the song that won, and print
+    # it. When the corpus has nothing relevant this says so rather than guessing.
+    if index is not None and recommendations:
+        top_song = recommendations[0][0]
+        print(textwrap.fill(fun_fact_for(top_song, index), width=78))
+
 
 def main() -> None:
     songs = load_songs("data/songs.csv")
+    index = load_index("data/music_notes.md")
     print(f"Loaded songs: {len(songs)}")
+    print(f"Loaded notes: {len(index)}")
 
     # Run every example profile so their outputs can be compared side by side.
     for label, user_prefs in PROFILES:
-        print_profile_recommendations(label, user_prefs, songs)
+        print_profile_recommendations(label, user_prefs, songs, index=index)
 
 
 if __name__ == "__main__":
