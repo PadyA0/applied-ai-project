@@ -1,0 +1,90 @@
+==============================================================================
+RECOMMENDER: full run across all four demo profiles
+==============================================================================
+
+Command:   python -m src.main
+Run from:  the project root
+Exit code: 0
+
+Ranked recommendations for each of the four demo profiles, with the reasons
+behind every score and a retrieved fun fact underneath each table.
+
+The fourth profile (Deep Ambient) is the one to look at. No note in the corpus
+covers ambient, so the retriever abstains instead of returning its best guess.
+
+------------------------------------------------------------------------------
+
+Loaded songs: 100
+Loaded notes: 113
+
+==============================================================================
+  Chill Indie  (indie pop / melancholic / low energy)
+  profile: genre=indie pop, mood=melancholic, energy=0.2
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Electric Feel        | MGMT             | 2.48  | genre match (+2.0), energy fit (+0.48)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Rooftop Lights       | Indigo Parade    | 2.44  | genre match (+2.0), energy fit (+0.44)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Take Me Out          | Franz Ferdinand  | 2.40  | genre match (+2.0), energy fit (+0.40)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+Fun fact (indie pop, medium confidence, match 0.39): Indie pop borrowed the
+hooks of pop while keeping the smaller budgets and looser production of
+independent labels, which is why the vocals often sit further back in the mix
+than a chart record would allow.
+
+==============================================================================
+  Smooth Jazz  (jazz / cool / mid energy)
+  profile: genre=jazz, mood=cool, energy=0.4
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | So What              | Miles Davis      | 3.90  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.90)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | My Favorite Things   | John Coltrane    | 2.98  | genre match (+2.0), energy fit (+0.98)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Feeling Good         | Nina Simone      | 2.98  | genre match (+2.0), energy fit (+0.98)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+Fun fact (Miles Davis, So What, medium confidence, match 0.36): "So What"
+opens Kind of Blue from 1959 and is a landmark of modal jazz. It stays on two
+scales instead of moving through chord changes, which left the soloists far
+more room.
+
+==============================================================================
+  Upbeat Pop   (pop / happy / high energy)
+  profile: genre=pop, mood=happy, energy=0.8
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Sunrise City         | Neon Echo        | 3.98  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.98)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Umbrella             | Rihanna          | 3.00  | genre match (+2.0), energy fit (+1.00)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Billie Jean          | Michael Jackson  | 2.99  | genre match (+2.0), energy fit (+0.99)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+Fun fact (pop, high confidence, match 0.51): Pop is less a sound than a chart
+position. The label follows whatever is selling at the time, which is why a
+1983 pop record and a 2020 pop record can share almost no instruments.
+
+==============================================================================
+  Deep Ambient (ambient / chill / very low energy)
+  profile: genre=ambient, mood=chill, energy=0.1
+==============================================================================
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Weightless           | Marconi Union    | 4.00  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+1.00)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Spacewalk Thoughts   | Orbit Bloom      | 3.82  | genre match (+2.0), mood match (+1.0),       |
+|    |                      |                  |       | energy fit (+0.82)                           |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Music for Airports   | Brian Eno        | 2.98  | genre match (+2.0), energy fit (+0.98)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+Fun fact: nothing in the notes about ambient yet, so no fact to give.

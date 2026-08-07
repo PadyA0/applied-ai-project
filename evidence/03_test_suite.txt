@@ -1,0 +1,18 @@
+==============================================================================
+TEST SUITE: full pytest run
+==============================================================================
+
+Command:   python -m pytest -q
+Run from:  the project root
+Exit code: 0
+
+Every unit test across nine files: loader, scorer, ranker, formatter,
+retriever, the reliability harness itself, and the data files.
+
+Note: the elapsed time on the final line varies between runs. Everything else in this file is deterministic.
+
+------------------------------------------------------------------------------
+
+........................................................................ [ 56%]
+........................................................                 [100%]
+128 passed in 0.99s

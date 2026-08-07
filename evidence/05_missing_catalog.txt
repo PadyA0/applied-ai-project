@@ -1,0 +1,19 @@
+==============================================================================
+ERROR HANDLING: the song catalog is missing
+==============================================================================
+
+Command:   python -m src.main   (run where data/songs.csv does not exist)
+Run from:  the project root
+Exit code: 1
+
+The catalog is not optional. Without it there is nothing to recommend, so the
+system logs an error naming the file and the likely cause, then exits 1 instead
+of printing an empty table or raising a stack trace at the user.
+
+This is the deliberate contrast with 04: one missing file degrades the output,
+the other one stops the program, and the difference is a decision rather than
+an accident.
+
+------------------------------------------------------------------------------
+
+[ERROR] Could not read data/songs.csv ([Errno 2] No such file or directory: 'data/songs.csv'). Run this from the project root.

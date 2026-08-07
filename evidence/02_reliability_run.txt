@@ -1,0 +1,25 @@
+==============================================================================
+RELIABILITY HARNESS: six checks over the whole system
+==============================================================================
+
+Command:   python -m src.reliability
+Run from:  the project root
+Exit code: 0
+
+Measures the system as a whole rather than function by function. Exits 0 when
+every check passes and 1 otherwise, so it can be wired into CI.
+
+The full per check breakdown is written to tests/results/reliability_report.md.
+
+------------------------------------------------------------------------------
+
+Reliability: 100 songs, 113 notes
+
+[PASS] Determinism: 4 profiles scored 5 times each
+[PASS] Golden snapshot: 4 baselines compared
+[PASS] Genre accuracy at rank 1: 32/32 genres (100%) surface themselves at rank 1
+[PASS] Catalog coverage: 82% of the catalog is reachable
+[PASS] Perturbation robustness: total churn up to 67%, material churn 0% (limit 34%)
+[PASS] Fun fact grounding: 0 ungrounded claims out of 100 songs
+
+Report written to tests/results/reliability_report.md

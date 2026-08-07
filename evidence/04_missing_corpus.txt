@@ -1,0 +1,37 @@
+==============================================================================
+ERROR HANDLING: the notes corpus is missing
+==============================================================================
+
+Command:   python -m src.main   (run where data/music_notes.md does not exist)
+Run from:  the project root
+Exit code: 0
+
+The notes corpus is optional, so losing it must not take the recommender down.
+The system logs a warning, continues with an empty index, and every song
+abstains from giving a fun fact. Exit code is 0 because nothing actually failed.
+
+Reproduced here by running from a temporary directory containing data/songs.csv
+but no data/music_notes.md, so no real file is ever moved or deleted.
+
+Output truncated after the first profile; the remaining profiles behave identically.
+
+------------------------------------------------------------------------------
+
+[WARNING] Could not read the notes corpus at data/music_notes.md ([Errno 2] No such file or directory: 'data/music_notes.md'). Continuing without fun facts.
+Loaded songs: 100
+Loaded notes: 0
+
+
+  Chill Indie  (indie pop / melancholic / low energy)
+  profile: genre=indie pop, mood=melancholic, energy=0.2
+
++----+----------------------+------------------+-------+----------------------------------------------+
+| #  | Title                | Artist           | Score | Reasons                                      |
++====+======================+==================+=======+==============================================+
+| 1  | Electric Feel        | MGMT             | 2.48  | genre match (+2.0), energy fit (+0.48)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 2  | Rooftop Lights       | Indigo Parade    | 2.44  | genre match (+2.0), energy fit (+0.44)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+| 3  | Take Me Out          | Franz Ferdinand  | 2.40  | genre match (+2.0), energy fit (+0.40)       |
++----+----------------------+------------------+-------+----------------------------------------------+
+Fun fact: nothing in the notes about indie pop yet, so no fact to give.
