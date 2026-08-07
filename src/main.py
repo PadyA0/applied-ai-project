@@ -9,6 +9,8 @@ You will implement the functions in recommender.py:
 - recommend_songs
 """
 
+import logging
+import sys
 import textwrap
 
 try:
@@ -99,9 +101,28 @@ def print_profile_recommendations(label: str, user_prefs: dict, songs: list,
         print(textwrap.fill(fun_fact_for(top_song, index), width=78))
 
 
-def main() -> None:
-    songs = load_songs("data/songs.csv")
+def main() -> int:
+    # Warnings from the retrieval layer go to stderr so they stay separate from
+    # the tables on stdout.
+    logging.basicConfig(format="[%(levelname)s] %(message)s", level=logging.INFO)
+
+    # The catalog is not optional. Without it there is nothing to recommend, so
+    # this fails loudly with an actionable message instead of a stack trace.
+    try:
+        songs = load_songs("data/songs.csv")
+    except OSError as error:
+        logging.error("Could not read data/songs.csv (%s). "
+                      "Run this from the project root.", error)
+        return 1
+
+    if not songs:
+        logging.error("data/songs.csv loaded but contains no songs.")
+        return 1
+
+    # The corpus IS optional. load_index degrades to an empty index and logs
+    # why, and every song then abstains rather than the program dying.
     index = load_index("data/music_notes.md")
+
     print(f"Loaded songs: {len(songs)}")
     print(f"Loaded notes: {len(index)}")
 
@@ -109,6 +130,8 @@ def main() -> None:
     for label, user_prefs in PROFILES:
         print_profile_recommendations(label, user_prefs, songs, index=index)
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

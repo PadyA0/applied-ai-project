@@ -6,12 +6,16 @@ returns its best guess is indistinguishable from a system making things up, so
 several of these tests target the abstain path.
 """
 
+import logging
+
 import pytest
 
 from src.rag import (
+    CONFIDENCE_BANDS,
     Note,
     RELEVANCE_THRESHOLD,
     build_index,
+    confidence_label,
     build_query,
     fun_fact_for,
     load_index,
@@ -202,6 +206,58 @@ def test_require_any_filters_out_otherwise_similar_notes(index):
     # Similarity alone finds something; topicality correctly finds nothing.
     assert unfiltered
     assert filtered == []
+
+
+# --- Confidence reporting ---
+
+def test_confidence_label_bands():
+    assert confidence_label(0.55) == "high"
+    assert confidence_label(0.40) == "high"
+    assert confidence_label(0.30) == "medium"
+    assert confidence_label(0.20) == "medium"
+    assert confidence_label(0.11) == "low"
+
+
+def test_fun_fact_reports_its_confidence(index):
+    song = {"artist": "Miles Davis", "genre": "jazz", "mood": "cool"}
+    fact = fun_fact_for(song, index)
+    assert "confidence" in fact
+    assert any(band in fact for _, band in CONFIDENCE_BANDS)
+
+
+# --- Error handling: the corpus is optional, the recommender is not ---
+
+def test_load_index_survives_a_missing_corpus(tmp_path, caplog):
+    """A missing corpus must degrade to abstaining, not crash the program."""
+    missing = str(tmp_path / "not_here.md")
+    with caplog.at_level(logging.WARNING):
+        index = load_index(missing)
+    assert len(index) == 0
+    assert "Could not read the notes corpus" in caplog.text
+
+
+def test_a_degraded_index_abstains_instead_of_guessing(tmp_path):
+    index = load_index(str(tmp_path / "not_here.md"))
+    fact = fun_fact_for({"genre": "jazz", "artist": "Miles Davis"}, index)
+    assert "nothing in the notes about jazz" in fact
+
+
+def test_load_index_warns_when_the_corpus_parses_to_nothing(tmp_path, caplog):
+    # A file with no "### " headings is readable but yields no notes, which is
+    # a formatting mistake worth saying out loud rather than silently ignoring.
+    path = tmp_path / "empty.md"
+    path.write_text("just some prose with no headings at all\n", encoding="utf-8")
+    with caplog.at_level(logging.WARNING):
+        index = load_index(str(path))
+    assert len(index) == 0
+    assert "parsed to zero notes" in caplog.text
+
+
+def test_load_notes_still_raises_so_callers_can_choose(tmp_path):
+    # load_index swallows the error on purpose; load_notes does not, so a caller
+    # that genuinely needs the corpus can still find out it is missing.
+    with pytest.raises(OSError):
+        load_notes(str(tmp_path / "not_here.md"))
 
 
 def test_every_catalog_song_is_grounded_or_abstains(index):

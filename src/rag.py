@@ -17,11 +17,14 @@ with retrieved text. That keeps the layer free, offline and deterministic,
 which in turn makes it testable.
 """
 
+import logging
 import math
 import re
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
+
+log = logging.getLogger(__name__)
 
 DEFAULT_NOTES_PATH = "data/music_notes.md"
 
@@ -29,6 +32,15 @@ DEFAULT_NOTES_PATH = "data/music_notes.md"
 # corpus: real genre and artist hits land well above it, while a song whose
 # genre nobody has written about lands below and triggers the abstain path.
 RELEVANCE_THRESHOLD = 0.10
+
+# Similarity bands reported alongside each fun fact. The retriever knows how
+# good its own match was, so it should say so rather than presenting a 0.12
+# match and a 0.50 match in identical language.
+CONFIDENCE_BANDS = (
+    (0.40, "high"),
+    (0.20, "medium"),
+    (0.0, "low"),
+)
 
 # Words that appear across most notes and carry no signal about which note is
 # the right one.
@@ -70,11 +82,23 @@ def tokenize(text: str) -> List[str]:
     return [w for w in words if w not in STOPWORDS and len(w) > 1]
 
 
+def confidence_label(similarity: float) -> str:
+    """Turn a raw similarity score into a word a reader can act on."""
+    for floor, label in CONFIDENCE_BANDS:
+        if similarity >= floor:
+            return label
+    return "low"
+
+
 def load_notes(path: str = DEFAULT_NOTES_PATH) -> List[Note]:
     """Chunk the markdown corpus into Notes, one per `### ` heading.
 
     Text before the first heading (the file's own preamble) is ignored, so the
     explanatory header in music_notes.md never gets retrieved as a fact.
+
+    Raises the underlying OSError if the corpus cannot be read. Callers that
+    want to survive a missing corpus should use `load_index`, which degrades to
+    an empty index instead.
     """
     with open(path, encoding="utf-8") as f:
         lines = f.read().splitlines()
@@ -234,9 +258,29 @@ def fun_fact_for(song: Dict, index: NoteIndex) -> str:
         return f"Fun fact: nothing in the notes about {genre} yet, so no fact to give."
 
     note, score = hits[0]
-    return f"Fun fact ({note.title}, match {score:.2f}): {note.body}"
+    return (
+        f"Fun fact ({note.title}, {confidence_label(score)} confidence, "
+        f"match {score:.2f}): {note.body}"
+    )
 
 
 def load_index(path: str = DEFAULT_NOTES_PATH) -> NoteIndex:
-    """Convenience wrapper: read the corpus and index it in one call."""
-    return build_index(load_notes(path))
+    """Read the corpus and index it, degrading to an empty index on failure.
+
+    The fun fact layer is a garnish on top of the recommender, so a missing or
+    unreadable corpus must not take the recommendations down with it. On failure
+    this logs why and returns an empty index, which makes every song abstain.
+    That is the same honest behaviour as a genre nobody wrote about, just
+    applied to everything at once.
+    """
+    try:
+        notes = load_notes(path)
+    except OSError as error:
+        log.warning("Could not read the notes corpus at %s (%s). "
+                    "Continuing without fun facts.", path, error)
+        return build_index([])
+
+    if not notes:
+        log.warning("The notes corpus at %s parsed to zero notes. "
+                    "Check that it uses '### ' headings.", path)
+    return build_index(notes)
