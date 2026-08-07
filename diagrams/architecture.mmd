@@ -1,0 +1,31 @@
+flowchart TD
+    A[data/songs.csv] --> B[Loader: load_songs]
+    C[User taste profile] --> D
+    B --> D[Ranker: recommend_songs]
+    E[Weight config] --> F[Scorer: score_song]
+    D --> F
+    F --> D
+    D --> G[Formatter: render_table]
+
+    H[data/music_notes.md] --> I[Retriever: TF-IDF search]
+    D --> I
+    I --> J{Relevant note found?}
+    J -->|Yes| K[Generator: fun fact from template]
+    J -->|No| L[Abstain: no note for this genre]
+    K --> M[Fun fact]
+    L --> M
+
+    G --> N[Output: ranked table with reasons]
+    M --> N
+
+    F --> O[Tester: pytest suite]
+    D --> O
+    D --> P[Evaluator: determinism, coverage, drift]
+    K --> Q[Grounding check: fact must exist in corpus]
+    O --> R[tests/results report]
+    P --> R
+    Q --> R
+
+    N --> S[Human reviews output]
+    R --> S
+    S --> E
