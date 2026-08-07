@@ -5,7 +5,7 @@ so columns stay aligned. These tests cover the structural output and the
 wrapping branch.
 """
 
-from src.main import render_table
+from src.main import ask_profile, render_table
 
 
 def test_headers_and_values_appear():
@@ -45,3 +45,29 @@ def test_row_count_reflected_in_dividers():
     table = render_table(["H"], [["a"], ["b"], ["c"]], [3])
     divider_lines = [l for l in table.splitlines() if set(l) <= {"+", "-", "="}]
     assert len(divider_lines) == 2 + 3  # top + header sep + one per row
+
+
+# --- ask_profile: the --ask GENRE demo path in main.py ---
+
+def test_ask_profile_builds_a_single_genre_profile():
+    label, prefs = ask_profile("jazz")
+    assert prefs["genre"] == "jazz"
+    assert "jazz" in label
+
+
+def test_ask_profile_lowercases_the_genre():
+    # Catalog genres are stored lowercase, so a capitalised argument must still
+    # match rather than silently scoring zero.
+    _, prefs = ask_profile("Jazz")
+    assert prefs["genre"] == "jazz"
+
+
+def test_ask_profile_defaults_to_mid_energy():
+    _, prefs = ask_profile("jazz")
+    assert prefs["energy"] == 0.5
+
+
+def test_ask_profile_sets_no_mood_so_only_genre_drives_it():
+    # Leaving mood out is deliberate: the demo is about one signal at a time.
+    _, prefs = ask_profile("jazz")
+    assert "mood" not in prefs

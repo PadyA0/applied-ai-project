@@ -49,7 +49,7 @@ A diagram of the whole system lives in [`diagrams/architecture.mmd`](diagrams/ar
 
 **Testing and human review.** Two separate layers check the system, because they answer different questions:
 
-- The **pytest suite** (128 tests) asks "does each function do what I said it does". It covers the loader, scorer, ranker, formatter, retriever and the harness itself.
+- The **pytest suite** (132 tests) asks "does each function do what I said it does". It covers the loader, scorer, ranker, formatter, retriever and the harness itself.
 - The **evaluator** (`src/reliability.py`) asks "does the system as a whole stay trustworthy when I change something". It measures determinism, drift against a saved baseline, genre accuracy, catalog coverage, robustness to tiny input changes, and whether every fun fact is traceable to the corpus.
 
 The human sits at the end of both. I read the reasons column to judge whether a ranking is actually sensible, and I approve the golden baseline before it becomes the thing future runs are measured against. When either one looks wrong, the fix is to go back and change the weight config. That loop, from output to human judgment to weights, is the arrow that closes the diagram.
@@ -126,13 +126,14 @@ To write the results into `tests/results/` the way this repo records them:
 pytest -q --junitxml=tests/results/junit.xml > tests/results/results.txt 2>&1
 ```
 
-The suite is 128 tests across 9 files. I wrote at least one test per method in `recommender.py`, plus edge cases for the scoring boundaries, plus `tests/test_rag.py` for the retrieval layer and `tests/test_reliability.py` for the evaluator. The retrieval tests deliberately spend more effort on the refusal path than the success path, because a retriever that always returns its best guess is indistinguishable from a system making things up.
+The suite is 132 tests across 9 files. I wrote at least one test per method in `recommender.py`, plus edge cases for the scoring boundaries, plus `tests/test_rag.py` for the retrieval layer and `tests/test_reliability.py` for the evaluator. The retrieval tests deliberately spend more effort on the refusal path than the success path, because a retriever that always returns its best guess is indistinguishable from a system making things up.
 
 ### What Each Command Produces
 
 | Command | What it does | Where the output goes |
 | --- | --- | --- |
 | `python -m src.main` | Ranked recommendations plus a retrieved fun fact per profile | terminal |
+| `python -m src.main --ask jazz` | The same thing for one genre you name, instead of all four profiles | terminal |
 | `python -m src.reliability` | Six reliability checks | terminal and `tests/results/reliability_report.md` |
 | `python -m src.reliability --update-golden` | Re-approves the current rankings as the baseline | `tests/golden_recommendations.json` |
 | `pytest` | 90 unit and integration tests | terminal |
@@ -287,7 +288,7 @@ Every log carries a header with the exact command, the working directory and the
 | --- | --- | --- |
 | [01_recommender_run.txt](evidence/01_recommender_run.txt) | `python -m src.main` | All four profiles with reasons and fun facts |
 | [02_reliability_run.txt](evidence/02_reliability_run.txt) | `python -m src.reliability` | The six reliability checks |
-| [03_test_suite.txt](evidence/03_test_suite.txt) | `python -m pytest -q` | All 128 tests |
+| [03_test_suite.txt](evidence/03_test_suite.txt) | `python -m pytest -q` | All 132 tests |
 | [04_missing_corpus.txt](evidence/04_missing_corpus.txt) | main without the notes corpus | Optional data missing: warns, degrades, exits 0 |
 | [05_missing_catalog.txt](evidence/05_missing_catalog.txt) | main without the catalog | Required data missing: errors, exits 1 |
 
@@ -337,7 +338,7 @@ Why I built it this way, and what I gave up for each choice.
 
 ## Testing Summary
 
-**The short version.** I measure reliability four ways. **Automated tests:** 128 pytest tests covering every function, plus a six check harness (`python -m src.reliability`) that measures the system as a whole and writes a report. **Confidence scoring:** the retriever reports how good its own match was, as a band and a raw number, so a weak fact does not look like a strong one. **Logging and error handling:** a missing notes corpus logs a warning and degrades to giving no fun facts, while a missing catalog logs an error and exits 1, because one of those is optional and the other is not. **Human evaluation:** every recommendation prints the reasons behind its score for me to sanity check, and the golden baseline only updates when I approve it by hand. Current state is 128 tests passing and 6/6 checks passing, with the honest caveat that 18 songs are unreachable and 3 genres have no fun fact.
+**The short version.** I measure reliability four ways. **Automated tests:** 132 pytest tests covering every function, plus a six check harness (`python -m src.reliability`) that measures the system as a whole and writes a report. **Confidence scoring:** the retriever reports how good its own match was, as a band and a raw number, so a weak fact does not look like a strong one. **Logging and error handling:** a missing notes corpus logs a warning and degrades to giving no fun facts, while a missing catalog logs an error and exits 1, because one of those is optional and the other is not. **Human evaluation:** every recommendation prints the reasons behind its score for me to sanity check, and the golden baseline only updates when I approve it by hand. Current state is 132 tests passing and 6/6 checks passing, with the honest caveat that 18 songs are unreachable and 3 genres have no fun fact.
 
 The rest of this section is what that process actually turned up.
 
@@ -347,7 +348,7 @@ What worked, what did not, and what I actually learned from it.
 
 ### What worked
 
-The 128 tests are split across nine files, one per unit, and that structure earned itself back. When I widened the tempo range, exactly one test failed and it told me which song and which range in the failure message. I did not have to go hunting.
+The 132 tests are split across nine files, one per unit, and that structure earned itself back. When I widened the tempo range, exactly one test failed and it told me which song and which range in the failure message. I did not have to go hunting.
 
 Writing tests per branch rather than per function was the useful move. `score_song` has four different scoring rules inside it and my tests hit each one separately, including the boring cases like a preference the song does not have a column for. Those boring tests are the ones that caught things.
 

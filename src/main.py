@@ -101,6 +101,15 @@ def print_profile_recommendations(label: str, user_prefs: dict, songs: list,
         print(textwrap.fill(fun_fact_for(top_song, index), width=78))
 
 
+def ask_profile(genre: str, energy: float = 0.5) -> tuple:
+    """Build a one off profile from a genre typed on the command line.
+
+    Used by `python -m src.main --ask jazz`, which exists so a single genre can
+    be demonstrated without scrolling past the four built in profiles.
+    """
+    return (f"Asked for: {genre}", {"genre": genre.lower(), "energy": energy})
+
+
 def main() -> int:
     # Warnings from the retrieval layer go to stderr so they stay separate from
     # the tables on stdout.
@@ -125,6 +134,17 @@ def main() -> int:
 
     print(f"Loaded songs: {len(songs)}")
     print(f"Loaded notes: {len(index)}")
+
+    # --ask GENRE runs a single genre instead of all four demo profiles.
+    if "--ask" in sys.argv:
+        position = sys.argv.index("--ask")
+        genre = " ".join(sys.argv[position + 1:]).strip()
+        if not genre:
+            logging.error("--ask needs a genre, for example: --ask jazz")
+            return 1
+        label, prefs = ask_profile(genre)
+        print_profile_recommendations(label, prefs, songs, index=index)
+        return 0
 
     # Run every example profile so their outputs can be compared side by side.
     for label, user_prefs in PROFILES:
